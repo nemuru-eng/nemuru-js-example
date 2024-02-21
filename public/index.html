@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nemuru sample</title>
+    <meta name="description" content="Sample to show you how to use nemuru.js" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.nemuru.com/assets/stg/nemuru.stg.js"></script>
+  </head>
+  <body>
+    <main>
+      <section>
+          <div class="product">
+            <img
+            src="https://images.pexels.com/photos/4352247/pexels-photo-4352247.jpeg"
+            alt="Kivik Sofa"
+            height="120px"
+            width="120px"
+            />
+            <div class="description">
+              <h3>KIVIK 3-seat sofa</h3>
+              <p>
+                A memory foam sofa adapts to your body for comfy support, and it's
+                a place where memories are made.
+              </p>
+            </div>
+            <h3>875.00 €</h3>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div class="payment-method">
+          <div class="instalments">
+            <nemuru-simulation
+              conditions-amount="87500"
+              conditions-product="instalments"
+              style-color="#3E6AE1"
+              style-variant="select"
+              style-branding="default"
+              style="width: 100%"
+            ></nemuru-simulation>
+          </div>
+            <button type="button" id="checkout-btn" onclick="checkout();">Checkout</button>
+        </div>
+      </section>
+    </main>
+    <div id="nemuru-checkout"></div>
+    <script>
+      const CLIENT_ID = ""; // Client ID provided by Nemuru
+      
+      const initialize = async () => {
+        // Initialize Nemuru (ensure awaiting async promise)
+        await Nemuru.init({
+          clientId: CLIENT_ID,
+          configuration: {
+            currency: "EUR",
+            locale: "es-ES",
+          },
+        });
+      };
+      
+      initialize();
+
+      const checkout = async () => {
+        document.querySelector("#checkout-btn").setAttribute("disabled", "true");
+        // Create an order
+        const response = await fetch("/create-order", { method: "POST" });
+        const { order_id, access_token } = await response.json();
+        // Display the Checkout widget
+        Nemuru.checkout({
+          container: "nemuru-checkout",
+          orderId: order_id,
+          accessToken: access_token,
+          style: { branding: "default" },
+          onClose: (status) => console.log(status),
+        });
+        document.querySelector("#checkout-btn").setAttribute("disabled", "false");
+      }
+    </script>
+  </body>
+</html>
