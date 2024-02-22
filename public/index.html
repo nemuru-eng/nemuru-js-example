@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.nemuru.com/assets/stg/nemuru.stg.js"></script>
+    <style>
+      #checkout-btn {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <main>
@@ -57,7 +62,19 @@
             locale: "es-ES",
           },
         });
+        availability();
       };
+
+      const availability = () => {
+        // Check availability of instalments for given amount
+        const conditions = Nemuru.availableConditions({
+          amount: 875,
+        });
+        if (conditions.length > 0) {
+          // Display the Checkout button if conditions are available
+          document.querySelector("#checkout-btn").style.display = "block";
+        }
+      }
       
       initialize();
 
