@@ -21,4 +21,4 @@ Make sure to inform the following variables with the values provided by Nemuru:
 - `server.js`: set the `USERNAME` and `PASSWORD`.
 - `public/index.html`: set the `CLIENT_ID`.
 
-3. Go to [http://localhost:3000](http://localhost:3000)
+3. Go to [http://localhost:4000](http://localhost:4000)
